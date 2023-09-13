@@ -16,22 +16,25 @@
 
     .box
     {
-        height: 200px;
+        height: auto;
         text-align: center;
         display: flex;
         margin: auto;
+        background-color: rgba(0,0,0,0.15);
+        border-radius: 10px;
     }
     
 </style>
 <body>
     <div class="wrapper row mt-5">
-        <div class="box col-lg-6 bg-warning">
+        <div class="box col-lg-6">
             <div class="block row">
 
-                <div class="arrow-pre col-lg-1"><img src="arrow-left-line.png" alt=""></div>
+                <div class="arrow-previous col-lg-1 my-5"><img src="arrow-left-line.png" alt=""></div>
                 <div class="box-image col-lg-4">sdf</div>
-                <div class="content col-lg-6 mx-3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo sunt quisquam, tenetur labore vero corrupti id. Maxime, nostrum, voluptatum rerum repudiandae quae quasi quis perferendis dicta ad iusto, animi voluptatem.</div>
-                <div class="arrow-forward col-lg-1"><img src="arrow-right-line.png" alt=""></div>
+                <div class="content col-lg-6">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo sunt quisquam, tenetur labore vero corrupti id. Maxime, nostrum, voluptatum rerum repudiandae quae quasi quis perferendis dicta ad iusto, animi voluptatem.
+                </div>
+                <div class="arrow-forward col-lg-1 my-5"><img src="arrow-right-line.png" alt=""></div>
             </div>
         </div>
     </div>
@@ -42,26 +45,50 @@
 
 let box_image=document.querySelector(".box-image");
 let content=document.querySelector(".content");
+let previous = document.querySelector(".arrow-previous");
+let forward=document.querySelector(".arrow-forward");
+let count=0;
+let res=null;
+
+previous.onclick = () =>
+{
+    if (count == 0) return;
+    work(res,--count);
+}
+forward.onclick = () =>
+{
+    if(count == 20) return;
+    work(res,++count);
+}
 
 window.onload= () => {fetch("https://fakestoreapi.com/products")
     .then((response) => {
-      return response.json();
+    return response.json();
     })
     .then((result) => {
-      work(result);
+    res=result;
+    work(result,0);
     });
 }
 
-function work(result)
+function work(result,x)
 {
     let im=document.createElement("img");
-    im.src=result[0].image;
+    im.src=result[x].image;
     im.style="height: 200px; width: 150px;";
     console.log(result);
-    console.log(box_image);
     box_image.innerHTML = " ";
     box_image.append(im);
 
+    let b=document.createElement("div");
+    let head=document.createElement("h3");
+    head.textContent=result[x].title;
+    let cont=document.createElement("p");
+    cont.textContent=result[x].description;
+    b.appendChild(head);
+    b.appendChild(cont);
+    content.innerHTML="";
+    content.append(b);
 }
 
 </script>
