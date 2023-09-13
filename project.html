@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<style>
+    *
+    {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .box
+    {
+        height: 200px;
+        text-align: center;
+        display: flex;
+        margin: auto;
+    }
+    
+</style>
+<body>
+    <div class="wrapper row mt-5">
+        <div class="box col-lg-6 bg-warning">
+            <div class="block row">
+
+                <div class="arrow-pre col-lg-1"><img src="arrow-left-line.png" alt=""></div>
+                <div class="box-image col-lg-4">sdf</div>
+                <div class="content col-lg-6 mx-3">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo sunt quisquam, tenetur labore vero corrupti id. Maxime, nostrum, voluptatum rerum repudiandae quae quasi quis perferendis dicta ad iusto, animi voluptatem.</div>
+                <div class="arrow-forward col-lg-1"><img src="arrow-right-line.png" alt=""></div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<script>
+
+let box_image=document.querySelector(".box-image");
+let content=document.querySelector(".content");
+
+window.onload= () => {fetch("https://fakestoreapi.com/products")
+    .then((response) => {
+      return response.json();
+    })
+    .then((result) => {
+      work(result);
+    });
+}
+
+function work(result)
+{
+    let im=document.createElement("img");
+    im.src=result[0].image;
+    im.style="height: 200px; width: 150px;";
+    console.log(result);
+    console.log(box_image);
+    box_image.innerHTML = " ";
+    box_image.append(im);
+
+}
+
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</html>
