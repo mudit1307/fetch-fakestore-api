@@ -23,16 +23,22 @@
         background-color: rgba(0,0,0,0.15);
         border-radius: 10px;
     }
+    .block,.load
+    {
+    display: none;
+    }
+
     
 </style>
 <body>
     <div class="wrapper row mt-5">
         <div class="box col-lg-6">
+            <div class="load"></div>
             <div class="block row">
 
                 <div class="arrow-previous col-lg-1 my-5"><img src="arrow-left-line.png" alt=""></div>
-                <div class="box-image col-lg-4">sdf</div>
-                <div class="content col-lg-6">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo sunt quisquam, tenetur labore vero corrupti id. Maxime, nostrum, voluptatum rerum repudiandae quae quasi quis perferendis dicta ad iusto, animi voluptatem.
+                <div class="box-image col-lg-4"></div>
+                <div class="content col-lg-6">
                 </div>
                 <div class="arrow-forward col-lg-1 my-5"><img src="arrow-right-line.png" alt=""></div>
             </div>
@@ -47,18 +53,23 @@ let box_image=document.querySelector(".box-image");
 let content=document.querySelector(".content");
 let previous = document.querySelector(".arrow-previous");
 let forward=document.querySelector(".arrow-forward");
+let block=document.querySelector(".block");
+let load=document.querySelector(".load");
 let count=0;
 let res=null;
 
 previous.onclick = () =>
 {
     if (count == 0) return;
-    work(res,--count);
+    loading(0);
+    setTimeout(() => {work(res,--count)},1000);
 }
 forward.onclick = () =>
 {
-    if(count == 20) return;
-    work(res,++count);
+    if(count == 20) {return;}
+    loading(0);
+    setTimeout(() => {work(res,++count)},1000);
+    previous.style="none";
 }
 
 window.onload= () => {fetch("https://fakestoreapi.com/products")
@@ -67,16 +78,26 @@ window.onload= () => {fetch("https://fakestoreapi.com/products")
     })
     .then((result) => {
     res=result;
-    work(result,0);
+    loading(0);
+    setTimeout(() => {work(res,0)},1000);
     });
 }
 
+function loading(val)
+{
+    load.style.display="block";
+    block.style.display="none";
+    load.innerText="Loading...";
+}
+
+
 function work(result,x)
 {
+    load.style.display="none";
+    block.style.display="flex";
     let im=document.createElement("img");
     im.src=result[x].image;
     im.style="height: 200px; width: 150px;";
-    console.log(result);
     box_image.innerHTML = " ";
     box_image.append(im);
 
@@ -89,6 +110,11 @@ function work(result,x)
     b.appendChild(cont);
     content.innerHTML="";
     content.append(b);
+
+    if (x ==0 || x == 19)
+    {
+        previous.style="cursor: not-allowed;";
+    }
 }
 
 </script>
